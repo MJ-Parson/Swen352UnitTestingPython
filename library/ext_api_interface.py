@@ -1,6 +1,6 @@
 """
 Filename: ext_api_interface.py
-Description: module used for interacting with a web service
+Description: module used for interacting with a web service and other things
 """
 
 import requests
