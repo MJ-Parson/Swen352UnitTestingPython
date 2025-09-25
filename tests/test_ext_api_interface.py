@@ -1,9 +1,9 @@
 import unittest
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import MagicMock, patch
 
 import requests;
 from library.ext_api_interface import Books_API
-from library import ext_api_interface;
+
 
 class TestBooks_API(unittest.TestCase):
 
