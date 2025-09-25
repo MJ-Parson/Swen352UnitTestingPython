@@ -1,6 +1,7 @@
 """
 Filename: library_db_interface.py
 Description: module used for interacting with the local database
+Tester: Yuli!
 """
 
 from library.patron import Patron
