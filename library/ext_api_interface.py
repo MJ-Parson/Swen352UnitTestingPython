@@ -23,7 +23,6 @@ class Books_API:
                 return None
             return response.json()
         except requests.ConnectionError:
-            print("connection error!!!!!!!!!!!!!!!!!!!!!!")
             return None
 
     def is_book_available(self, book):

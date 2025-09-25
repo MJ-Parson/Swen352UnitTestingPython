@@ -43,15 +43,12 @@ class TestBooks_API(unittest.TestCase):
         # print("        [>] "+result)
         # self.assertRaises(Exception("ConnectionError"))
         # self.assertIsInstance(result,Exception("ConnectionError"))
-        mockResponse = Mock()
-        mockResponse.status_code = 404
-        mockResponse.raise_for_status.side_effect = requests.exceptions.HTTPError
-        mock_get.return_value = mockResponse
+        mock_get.side_effect = requests.exceptions.ConnectionError("Mocked Connection Error")
+        result = self.api.make_request("http://failurl")
 
-        # call and assert no connection
-        with self.assertRaises(requests.exceptions.HTTPError):
-            data = self.api.make_request("http://failurl")
-            print(data)
+        # Since original function just says None, check with print statement that we're hitting that code:
+        # Success! assert none
+        self.assertEqual(result, None)
 
     @patch.object(Books_API,"make_request")
     def test_is_book_available_true(self,mock_make_request):
@@ -76,6 +73,12 @@ class TestBooks_API(unittest.TestCase):
         self.assertEqual(result, ["Book 1", "Book 2"])
 
     @patch.object(Books_API,"make_request")
+    def test_books_by_author_no_json(self,mock_make_request):
+        mock_make_request.return_value = None
+        result = self.api.books_by_author("Jsonovitch Bosch")
+        self.assertEqual(result,[])
+
+    @patch.object(Books_API,"make_request")
     def test_get_book_info(self, mock_make_request):
         mock_make_request.return_value = {
             "docs": [
@@ -90,6 +93,12 @@ class TestBooks_API(unittest.TestCase):
         ])
 
     @patch.object(Books_API,"make_request")
+    def test_get_book_info_no_response(self,mock_make_request):
+        mock_make_request.return_value = None
+        result = self.api.get_book_info("Why I Hate Json: A Memoir")
+        self.assertEqual(result,[])
+
+    @patch.object(Books_API,"make_request")
     def test_get_ebooks(self,mock_make_request):
         mock_make_request.return_value = {
             "docs": [
@@ -100,6 +109,12 @@ class TestBooks_API(unittest.TestCase):
         result = self.api.get_ebooks("Book One")
         self.assertEqual(result, [{"title": "Book 1", "ebook_count": 2}])
     
+    @patch.object(Books_API,"make_request")
+    def test_get_ebooks_no_json(self,mock_make_request):
+        mock_make_request.return_value = None
+        result = self.api.get_ebooks("Json: An Ebook")
+        self.assertEqual(result,[])
+
     def tearDown(self):
         # destroy mocks (don't really need?)
         pass
