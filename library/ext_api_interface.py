@@ -1,6 +1,7 @@
 """
 Filename: ext_api_interface.py
 Description: module used for interacting with a web service and other things
+Tester: Marigold
 """
 
 import requests
@@ -22,6 +23,7 @@ class Books_API:
                 return None
             return response.json()
         except requests.ConnectionError:
+            print("connection error!!!!!!!!!!!!!!!!!!!!!!")
             return None
 
     def is_book_available(self, book):
